@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Microblog</title>
+      {% else %}
+      <title>Welcome to Microblog</title>
+      {% endif %}
+    </head>
+    <body>
+        <header>Library</header>
+	<nav>
+	<a href="{{ url_for('index') }}" style="padding: 5px">Home</a>
+	{% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        {% else %}
+        <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+	</nav>
+
+        <hr>
+	<section>
+	{% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+	</section>
+	<section>
+        {% block content %}{% endblock %}
+	</section>
+    </body>
+</html>

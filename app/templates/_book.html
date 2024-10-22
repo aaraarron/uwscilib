@@ -1,0 +1,32 @@
+<table>
+        <tr valign="top">
+            <td>
+		<h1>Book: <a href="{{ url_for('bookpage', id=book.id) }}">{{ book.title }}</a></h1>
+		<p style="padding: 5px">{{ book.book_author }}</p> 
+		<p style="padding: 5px">{{ book.book_style }}</p> 
+
+		{% if book.book_isbn13 %}
+		    <p>{{ book.book_isbn13 }}</p>
+		{% endif %}
+		{% if book.checked_by.id == 1 %}
+                <p style="text_color: green"><br>Available: 
+            <form action="{{ url_for('checkout', id=book.id) }}" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.submit(value='Checkout this book') }}
+                </form>
+		</p>
+
+        	{% elif book.checked_by == current_user %}
+		<p style="text_color: red"><br>You have this book: 
+            <form action="{{ url_for('returnbook', id=book.id) }}" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.submit(value='Return this book') }}
+                </form>
+		</p>
+		{% else %}
+		<p style="text_color: red"><br>Unavailable</p>
+                {% endif %}
+	    </td>
+
+        </tr>
+</table>   
